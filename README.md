@@ -1,2 +1,2 @@
-# game-snake
+# Game Snake 🐍
 Jogo da Cobrinha 
