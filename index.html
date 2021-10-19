@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Jogo da Cobrinha</title>
+    <link rel="icon" type="imagem/png" href="favicon-cobra.png" />
+</head>
+
+<body>
+    <center>
+    <canvas id="stage" width="600" height="600"></canvas>
+    <script type="text/javascript">
+
+        window.onload = function () {
+            // DECLARAR O PALCO
+            // PEGANDO NOSSO ELEMENTO DO HTML E PASSANDO O ID
+            var stage = document.getElementById('stage');
+            // DECLARAR UM CONTEXT
+            // ONDE VAMOS FAZER TODA A PARTE VISUAL DO JOGO
+            var ctx = stage.getContext("2d");
+            document.addEventListener("keydown", keyPush);
+            // DEFINE UM INTERVALO PARA UMA FUNÇÃO SER CHAMADA
+            setInterval(jogo, 100);
+
+            // QUANTAS CASAS A COBRA VAI ANDAR
+            const velocidade = 1;
+
+            // VELOCIDADE NA POSIÇÃO X & Y
+            var velocidadeX = 0;
+            var velocidadeY = 0;
+
+            // LOCAL DA CABEÇA COBRA
+            var pontoX = 10;
+            var pontoY = 15;
+
+            // TAMANHO & QUANTIDADE DO QUADRADINHO
+            var tamanhoPonto = 30;
+            var quantidadePonto = 20;
+
+            // POSIÇÃO INICIAL DA MAÇÃ
+            var posicaoMacaX = 15;
+            var posicaoMacaY = 15;
+
+            // CORPO DA COBRA
+            var rastro = [];
+
+            // TAMANHO DA COBRA 
+            tamanhoCobra = 1;
+
+            // TODA VEZ QUE ATUALIZAR
+            function jogo() {
+                pontoX = pontoX + velocidadeX;
+                pontoY = pontoY + velocidadeY;
+
+                // CASOS EM QUE A COBRA CHEGA NO FIM DO QUADRADO
+                if (pontoX < 0) {
+                    pontoX = quantidadePonto - 1;
+                }
+                if (pontoX > quantidadePonto - 1) {
+                    pontoX = 0;
+                }
+                if (pontoY < 0) {
+                    pontoY = quantidadePonto - 1;
+                }
+                if (pontoY > quantidadePonto - 1) {
+                    pontoY = 0;
+                }
+
+                // QUAL É O ESTILO DE PREENCHIMENTO DO CONTEXT
+                ctx.fillStyle = "black";
+
+                // COMANDO QUE PINTA O PALCO
+                ctx.fillRect(0, 0, stage.width, stage.height);
+
+                // PINTAR A MAÇÃ
+                ctx.fillStyle = "red";
+
+                // POSIÇÃO PRA PINTAR A MAÇÃ
+                ctx.fillRect(posicaoMacaX * tamanhoPonto, posicaoMacaY * tamanhoPonto, tamanhoPonto, tamanhoPonto);
+
+                // COR DA COBRA
+                ctx.fillStyle = "green";
+
+                // TAMANHO DA COBRA
+                for (var i = 0; i < rastro.length; i++) {
+                    // LOCAL ONDE VAI PINTAR A COBRA
+                    ctx.fillRect(rastro[i].x * tamanhoPonto, rastro[i].y * tamanhoPonto, tamanhoPonto - 1, tamanhoPonto - 1);
+
+                    // VERIFICAÇÃO SE A CABEÇA TA BATENDO NO RABO
+                    if (rastro[i].x == pontoX && rastro[i].y == pontoY) {
+                        velocidadeX = 0;
+                        velocidadeY = 0;
+                        tamanhoCobra = 1;
+                    }
+                }
+                // MOVIMENTO, INSERIR NO ULTIMO ELEMENTO DO array
+                rastro.push({ x: pontoX, y: pontoY })
+
+                // TIRAR O PRIMEIRO ELEMENTO DO array 
+                while (rastro.length > tamanhoCobra) {
+                    rastro.shift();
+                }
+
+                // AUMENTAR A CALDA DA COBRA
+                if (posicaoMacaX == pontoX && posicaoMacaY == pontoY) {
+                    // AUMENTANDO A COBRA
+                    tamanhoCobra++;
+                    // POSICIONANDO A MAÇÃ EM OUTRO LUGAR
+                    posicaoMacaX = Math.floor(Math.random() * quantidadePonto);
+                    posicaoMacaY = Math.floor(Math.random() * quantidadePonto);
+                }
+
+            }
+            
+            // PEGA A DIREÇÃO QUE O USUARIO DIGITAR
+            function keyPush(event) {
+
+                switch (event.keyCode) {
+                    case 37: // ESQUERDA
+                        velocidadeX = -velocidade;
+                        velocidadeY = 0;
+                        break;
+                    case 38: // CIMA
+                        velocidadeX = 0;
+                        velocidadeY = -velocidade;
+                        break;
+                    case 39: // DIRETIA
+                        velocidadeX = velocidade;
+                        velocidadeY = 0;
+                        break;
+                    case 40: // BAIXA
+                        velocidadeX = 0;
+                        velocidadeY = velocidade;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    </script>
+    </center>
+</body>
+
+</html>
