@@ -23,7 +23,7 @@
             setInterval(jogo, 100);
 
             // QUANTAS CASAS A COBRA VAI ANDAR
-            const velocidade = 0.4;
+            const velocidade = 1;
 
             // VELOCIDADE NA POSIÇÃO X & Y
             var velocidadeX = 0;
@@ -73,7 +73,7 @@
                 ctx.fillRect(0, 0, stage.width, stage.height);
 
                 // PINTAR A MAÇÃ
-                ctx.fillStyle = "red";
+                ctx.fillStyle = "pink";
 
                 // POSIÇÃO PRA PINTAR A MAÇÃ
                 ctx.fillRect(posicaoMacaX * tamanhoPonto, posicaoMacaY * tamanhoPonto, tamanhoPonto, tamanhoPonto);
